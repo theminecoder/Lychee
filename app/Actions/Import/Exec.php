@@ -253,7 +253,7 @@ class Exec
 					$this->status_error($file, 'Skipped duplicate (resynced metadata)');
 				} catch (Exception $e) {
 					$this->status_error($file, 'Could not import file');
-					Logs::error(__METHOD__, __LINE__, 'Could not import file (' . $file . ')');
+					Logs::error(__METHOD__, __LINE__, 'Could not import file (' . $file . '): ' . $e->getCode() . ' ' . $e->getMessage());
 				}
 			} else {
 				$this->status_error($file, 'Unsupported file type');
