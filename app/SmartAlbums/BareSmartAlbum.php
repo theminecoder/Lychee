@@ -65,8 +65,10 @@ class BareSmartAlbum extends Album
 		}
 
 		if (AccessControl::is_logged_in()) {
-			$query = $query->where('owner_id', '=', AccessControl::id())
-				->orWhere(
+			if(!Configs::get_value("single_library", false)) {
+				$query = $query->where('owner_id', '=', AccessControl::id());
+			}
+			$query->orWhere(
 					fn ($q) => $q->whereNotNull('album_id')
 						->whereIn('album_id', $this->albumIds)
 				);
