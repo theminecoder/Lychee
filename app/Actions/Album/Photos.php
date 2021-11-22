@@ -70,7 +70,7 @@ class Photos
 			$photo['license'] = $photo_model->get_license($album->get_license());
 
 			$this->symLinkFunctions->getUrl($photo_model, $photo);
-			if (!AccessControl::is_current_user($photo_model->owner_id) && !$album->is_full_photo_visible()) {
+			if (!Configs::get_value("single_library", false) && !AccessControl::is_current_user($photo_model->owner_id) && !$album->is_full_photo_visible()) {
 				$photo_model->downgrade($photo);
 			}
 
