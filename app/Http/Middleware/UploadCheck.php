@@ -54,7 +54,7 @@ class UploadCheck
 		}
 
 		if (Configs::get_value("single_library", false)) {
-			return true;
+			return $next($request);
 		}
 
 		$ret = $this->album_check($request, $user->id);
