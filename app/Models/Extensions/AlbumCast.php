@@ -57,7 +57,7 @@ trait AlbumCast
 
 		if (!empty($this->showtags) || !$this->smart) {
 			if (AccessControl::is_logged_in()) {
-				$return['owner'] = !Configs::get_value("single_library", false) ? $this->owner->name() : AccessControl::accessUserData()->name();
+				$return['owner'] = !Configs::get_value("single_library", false) ? $this->owner->name() : AccessControl::user()->name();
 			}
 		}
 

@@ -33,7 +33,7 @@ class Prepare
 			$album_array = $album->toReturnArray();
 
 			if (AccessControl::is_logged_in()) {
-				$album_array['owner'] = !Configs::get_value("single_library", false) ? $album->owner->name() : AccessControl::accessUserData()->name();
+				$album_array['owner'] = !Configs::get_value("single_library", false) ? $album->owner->name() : AccessControl::user()->name();
 			}
 
 			// Add to return
