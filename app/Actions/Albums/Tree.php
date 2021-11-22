@@ -41,7 +41,7 @@ class Tree
 			->orderBy('owner_id', 'ASC');
 		$albumCollection = $this->customSort($sql, $this->sortingCol, $this->sortingOrder);
 
-		if (AccessControl::is_logged_in()) {
+		if (AccessControl::is_logged_in() && !Configs::get_value("single_library", false)) {
 			$id = AccessControl::id();
 			list($albumCollection, $albums_shared) = $albumCollection->partition(fn ($album) => $album->owner_id == $id);
 			$return['shared_albums'] = $this->prepare($albums_shared->toTree());

@@ -3,6 +3,8 @@
 namespace App\Actions\Albums\Extensions;
 
 use App\Facades\AccessControl;
+use App\Models\Configs;
+use Composer\Config;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -18,11 +20,15 @@ trait PublicViewable
 		}
 
 		if (AccessControl::is_logged_in()) {
-			$id = AccessControl::id();
+			if (Configs::get_value("single_library")) {
+				return $query->where('viewable', '=', '1');
+			} else {
+				$id = AccessControl::id();
 
-			return $query->where(fn ($query) => $query->where('owner_id', '=', $id)
-				->orWhereIn('id', DB::table('user_album')->select('album_id')->where('user_id', '=', $id))
-				->orWhere(fn ($q) => $q->where('public', '=', '1')->where('viewable', '=', '1')));
+				return $query->where(fn ($query) => $query->where('owner_id', '=', $id)
+					->orWhereIn('id', DB::table('user_album')->select('album_id')->where('user_id', '=', $id))
+					->orWhere(fn ($q) => $q->where('public', '=', '1')->where('viewable', '=', '1')));
+			}
 		}
 
 		// or PUBLIC AND VIEWABLE (not hidden)

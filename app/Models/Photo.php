@@ -335,7 +335,7 @@ class Photo extends Model
 	 */
 	public function scopeOwnedBy(Builder $query, $id)
 	{
-		return $id == 0 ? $query : $query->where('owner_id', '=', $id);
+		return (Configs::get_value("single_library", false) || $id == 0) ? $query : $query->where('owner_id', '=', $id);
 	}
 
 	public function withTags($tags)

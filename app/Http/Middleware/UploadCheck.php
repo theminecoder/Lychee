@@ -7,6 +7,7 @@ namespace App\Http\Middleware;
 use App\Facades\AccessControl;
 use App\Factories\AlbumFactory;
 use App\Models\Album;
+use App\Models\Configs;
 use App\Models\Logs;
 use App\Models\Photo;
 use Closure;
@@ -50,6 +51,10 @@ class UploadCheck
 		// is not admin and does not have upload rights
 		if (!$user->upload) {
 			return response('false');
+		}
+
+		if (Configs::get_value("single_library", false)) {
+			return true;
 		}
 
 		$ret = $this->album_check($request, $user->id);

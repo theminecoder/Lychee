@@ -4,6 +4,7 @@ namespace App\Actions\Albums;
 
 use App\Actions\ReadAccessFunctions;
 use App\Facades\AccessControl;
+use App\Models\Configs;
 use Illuminate\Support\Collection as BaseCollection;
 
 class Prepare
@@ -31,7 +32,7 @@ class Prepare
 		foreach ($albums as $_ => $album) {
 			$album_array = $album->toReturnArray();
 
-			if (AccessControl::is_logged_in()) {
+			if (AccessControl::is_logged_in() && !Configs::get_value("single_library")) {
 				$album_array['owner'] = $album->owner->name();
 			}
 

@@ -4,6 +4,7 @@ namespace App\Actions\Albums\Extensions;
 
 use App\Facades\AccessControl;
 use App\Models\Album;
+use App\Models\Configs;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\DB;
@@ -70,6 +71,12 @@ class PublicIds
 	{
 		if (AccessControl::is_admin()) {
 			return new BaseCollection();
+		}
+
+		if (AccessControl::is_logged_in() && Configs::get_value("single_library", false)) {
+			return $this->init()
+				->where(fn ($q) => $this->notPublicNotViewable($q))
+				->get();
 		}
 
 		if (AccessControl::is_logged_in()) {

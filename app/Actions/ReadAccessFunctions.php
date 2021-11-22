@@ -38,7 +38,7 @@ class ReadAccessFunctions
 		}
 
 		if (
-			!$album->is_public() ||
+			(!Configs::get_value("single_library", false) && !$album->is_public()) ||
 			($obeyHidden && $album->viewable !== 1)
 		) {
 			return 2;  // Warning: Album private!
@@ -101,7 +101,7 @@ class ReadAccessFunctions
 	 */
 	public function photo(Photo $photo)
 	{
-		if (AccessControl::is_current_user($photo->owner_id)) {
+		if (AccessControl::is_current_user($photo->owner_id) || (AccessControl::is_logged_in() && Configs::get_value("single_library", false))) {
 			return true;
 		}
 		if ($photo->public === 1) {
