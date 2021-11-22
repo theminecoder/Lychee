@@ -4,7 +4,6 @@ namespace App\Actions\Album;
 
 use App\Facades\AccessControl;
 use App\Models\Album;
-use App\Models\Configs;
 use App\Models\Photo;
 use Illuminate\Support\Facades\Schema;
 

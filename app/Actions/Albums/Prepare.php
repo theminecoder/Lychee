@@ -32,7 +32,7 @@ class Prepare
 		foreach ($albums as $_ => $album) {
 			$album_array = $album->toReturnArray();
 
-			if (AccessControl::is_logged_in() && !Configs::get_value("single_library")) {
+			if (AccessControl::is_logged_in() && !Configs::get_value("single_library", false)) {
 				$album_array['owner'] = $album->owner->name();
 			}
 

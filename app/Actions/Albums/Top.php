@@ -47,7 +47,7 @@ class Top
 		$sql = $this->createTopleveAlbumsQuery()->where('smart', '=', false);
 		$albumCollection = $this->customSort($sql, $this->sortingCol, $this->sortingOrder);
 
-		if (AccessControl::is_logged_in() && !Configs::get_value("single_library")) {
+		if (AccessControl::is_logged_in() && !Configs::get_value("single_library", false)) {
 			$id = AccessControl::id();
 			list($return['albums'], $return['shared_albums']) = $albumCollection->partition(fn ($album) => $album->owner_id == $id);
 		} else {

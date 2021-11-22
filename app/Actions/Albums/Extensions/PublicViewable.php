@@ -4,7 +4,6 @@ namespace App\Actions\Albums\Extensions;
 
 use App\Facades\AccessControl;
 use App\Models\Configs;
-use Composer\Config;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +19,7 @@ trait PublicViewable
 		}
 
 		if (AccessControl::is_logged_in()) {
-			if (Configs::get_value("single_library")) {
+			if (Configs::get_value("single_library", false)) {
 				return $query->where('viewable', '=', '1');
 			} else {
 				$id = AccessControl::id();
