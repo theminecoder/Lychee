@@ -8,6 +8,7 @@ use App\Models\Configs;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PublicIds
 {
@@ -69,14 +70,8 @@ class PublicIds
 	 */
 	private function getDirectlyNotAccessible(): BaseCollection
 	{
-		if (AccessControl::is_admin()) {
+		if (AccessControl::is_admin() || (AccessControl::is_logged_in() && Configs::get_value("single_library", false))) {
 			return new BaseCollection();
-		}
-
-		if (AccessControl::is_logged_in() && Configs::get_value("single_library", false)) {
-			return $this->init()
-				->where(fn ($q) => $this->notPublicNotViewable($q))
-				->get();
 		}
 
 		if (AccessControl::is_logged_in()) {
